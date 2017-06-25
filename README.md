@@ -120,7 +120,7 @@ Other Apache™ Hadoop® ports:
 Here Apache™ Spark® service configuration environment variables :
 
 * `SPARK_HADOOP_TGZ_URL` : Url of a tar gz file within Apache™ Hadoop® configuration files (default: "")
-* `SPARK_CONFIG_TGZ_UR` : Url of a tar gz file within Apache™ Spark® configuration files (default: "")
+* `SPARK_CONFIG_TGZ_URL` : Url of a tar gz file within Apache™ Spark® configuration files (default: "")
 * `SPARK_START_HADOOP` : Include Apache™ Hadoop® features (true/false) (default: true)
 * `SPARK_START_HADOOP_ALL_SERVICES` : (true/false) Auto-Start all Apache™ Hadoop® services at startup other service start configurations will be ignored (default: false)
 * `SPARK_START_HADOOP_HDFS` : (true/false) Start Apache™ Hadoop® HDFS™ service (default: true)
@@ -278,7 +278,7 @@ docker run -d -p 49707:49707 -p 2122:2122 -p 8030:8030 -p 8031:8031 -p 8032:8032
        -p 8088:8088 -p 10020:10020 -p 19888:19888  -p 50010:50010  -p 50020:50020  -p 50070:50070  -p 50075:50075  -p 50090:50090 \
         -p 8020:8020  -p 9000:9000 -p 8080:8080 -v my/datanode/dir:/user/root/data/hadoop/hdfs/datanode -v my/namenode/dir:/user/root/data/hadoop/hdfs/namenode \
          -v my/checkpoint/dir:/user/root/data/hadoop/hdfs/checkpoint -v my/hadoop/config/files/dir:/etc/config/hadoop \
-         -v my/spark/config/files/dir:/etc/config/spark --name my-apache-spark hellgate75/apache-spark:2.1.1
+         -v my/spark/config/files/dir:/etc/config/spark --name my-apache-spark hellgate75/apache-spark:latest
 ```
 
 
