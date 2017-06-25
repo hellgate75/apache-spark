@@ -51,17 +51,21 @@ Here some information :
 
 Volumes : /user/root/data/hadoop/hdfs/datanode, /user/root/data/hadoop/hdfs/namenode, /user/root/data/hadoop/hdfs/checkpoint, /etc/config/hadoop, /etc/config/spark
 
+
 `/user/root/data/hadoop/hdfs/datanode` :
 
 DataNode storage folder.
+
 
 `/user/root/data/hadoop/hdfs/namenode` :
 
 NameNode storage folder.
 
+
 `/user/root/data/hadoop/hdfs/checkpoint`:
 
 Check Point and Check Point Edits storage folder.
+
 
 `/etc/config/hadoop`:
 
@@ -74,7 +78,9 @@ Configuration folder for Apache™ Hadoop®, and expected/suitable files are :
 
 
 `/etc/config/spark`:
+
 Configuration folder for Apache™ Spark®, and expected/suitable files are :
+
 * `docker.properties` : Configure MESOS docker image (NOT TESTED YET)
 * `log4j.properties` : Configure logging properties
 * `slaves` : Configure slave nodes hosts
