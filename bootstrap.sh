@@ -17,7 +17,7 @@ service ssh start
 mkdir -p $HADOOP_HOME/logs
 
 SPARK_RUNNING="$(ps -eaf|grep java| grep spark)"
-HADOOP_RUNNING="$(ps -eaf|grep java| grep haddop)"
+HADOOP_RUNNING="$(ps -eaf|grep java| grep hadoop)"
 
 if [[ "true" == "$SPARK_START_HADOOP" ]]; then
   if [[ -z "$SPARK_RUNNING" ]] || [[ "true" == "$SPARK_FORCE_HADOOP_RESTART" ]]; then
