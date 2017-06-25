@@ -226,7 +226,7 @@ in `/etc/config/spark` volume folder.
 YARN integration :
 
 We refer to file `spark-yarn.conf` that can be included in volume `spark-yarn.conf` or in Spark tar-gz URL.
-Docker System entry that activates YARN integration is : `SPARK_START_INTEGRATE_WITH_YARNf`
+Docker System entry that activates YARN integration is : `SPARK_START_INTEGRATE_WITH_YARN`
 
 
 ### Apache™ Hadoop® Docker Environment Entries ###
