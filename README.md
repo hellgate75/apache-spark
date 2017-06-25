@@ -290,13 +290,13 @@ docker run -d -p 49707:49707 -p 2122:2122 -p 8030:8030 -p 8031:8031 -p 8032:8032
 
 ### Test Spark / YARN console ###
 
-In order to access to yarn console you can use a web browser and type :
+In order to access to Apache™ Hadoop® Yarn® and Apache™ Spark® web console you can use a web browser and type :
 ```bash
     #For Apache™ Hadoop® test:
     http://{hostname or ip address}:8088
     eg.:
     http://localhost:8088 for a local container
-    #For Apache™ Spark test:
+    #For Apache™ Spark® test:
     http://{hostname or ip address}:8080
     eg.:
     http://localhost:8080 for a local container
