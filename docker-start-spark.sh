@@ -37,6 +37,7 @@ else
   fi
 
 fi
+
 if [[ -e /etc/config/spark/init-spark-env.sh ]]; then
   echo "Boostrap environment variable into the system from file : /etc/config/spark/init-spark-env.sh !!"
   chmod +x /etc/config/spark/init-spark-env.sh
@@ -113,6 +114,12 @@ else
     fi
   fi
 
+fi
+
+if [[ -e /usr/share/zoneinfo/$MACHINE_TIMEZONE ]]; then
+  ln -fs /usr/share/zoneinfo/$MACHINE_TIMEZONE /etc/localtime
+  echo "Current Timezone: $(cat /etc/timezone)"
+  dpkg-reconfigure tzdata
 fi
 
 echo "Checking files in /etc/config/hadoop folder ..."
@@ -223,11 +230,6 @@ if [[ "0" != "$CONFIGURED_BY_URL_EXIT_CODE" ]]; then
         sed s/JOB_HISTORY_WEBUI_PORT/$APACHE_HADOOP_MAPRED_JOB_HISTORY_WEBUI_PORT/ > $HADOOP_HOME/etc/hadoop/mapred-site.xml
       fi
     fi
-  fi
-  if [[ -e /usr/share/zoneinfo/$MACHINE_TIMEZONE ]]; then
-    ln -fs /usr/share/zoneinfo/$MACHINE_TIMEZONE /etc/localtime
-    echo "Current Timezone: $(cat /etc/timezone)"
-    dpkg-reconfigure tzdata
   fi
   cp -Rf $HADOOP_HOME/etc/hadoop /usr/local/spark/etc
 
