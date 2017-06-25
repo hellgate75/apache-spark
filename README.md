@@ -51,17 +51,21 @@ Here some information :
 
 Volumes : /user/root/data/hadoop/hdfs/datanode, /user/root/data/hadoop/hdfs/namenode, /user/root/data/hadoop/hdfs/checkpoint, /etc/config/hadoop, /etc/config/spark
 
+
 `/user/root/data/hadoop/hdfs/datanode` :
 
 DataNode storage folder.
+
 
 `/user/root/data/hadoop/hdfs/namenode` :
 
 NameNode storage folder.
 
+
 `/user/root/data/hadoop/hdfs/checkpoint`:
 
 Check Point and Check Point Edits storage folder.
+
 
 `/etc/config/hadoop`:
 
