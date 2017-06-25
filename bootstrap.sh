@@ -19,15 +19,6 @@ mkdir -p $HADOOP_HOME/logs
 SPARK_RUNNING="$(ps -eaf|grep java| grep spark)"
 HADOOP_RUNNING="$(ps -eaf|grep java| grep haddop)"
 
-# SPARK_START_HADOOP=true \
-# SPARK_START_HADOOP_ALL_SERVICES=false \
-# SPARK_START_HADOOP_HDFS=false \
-# SPARK_START_HADOOP_YARN=false \
-# SPARK_START_HADOOP_JOB_HISTORY=false \
-# SPARK_START_HADOOP_DEAMON=false \
-# SPARK_START_HADOOP_DEAMON=false \
-# SPARK_START_HADOOP_BALANCER=false \
-
 if [[ "true" == "$SPARK_START_HADOOP" ]]; then
   if [[ -z "$SPARK_RUNNING" ]] || [[ "true" == "$SPARK_FORCE_HADOOP_RESTART" ]]; then
     if [[ "true" == "$SPARK_FORCE_HADOOP_RESTART" ]]; then

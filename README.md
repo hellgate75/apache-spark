@@ -120,7 +120,7 @@ Other Apache™ Hadoop® ports:
 Here Apache™ Spark® service configuration environment variables :
 
 * `SPARK_HADOOP_TGZ_URL` : Url of a tar gz file within Apache™ Hadoop® configuration files (default: "")
-* `SPARK_CONFIG_TGZ_UR` : Url of a tar gz file within Apache™ Spark® configuration files (default: "")
+* `SPARK_CONFIG_TGZ_URL` : Url of a tar gz file within Apache™ Spark® configuration files (default: "")
 * `SPARK_START_HADOOP` : Include Apache™ Hadoop® features (true/false) (default: true)
 * `SPARK_START_HADOOP_ALL_SERVICES` : (true/false) Auto-Start all Apache™ Hadoop® services at startup other service start configurations will be ignored (default: false)
 * `SPARK_START_HADOOP_HDFS` : (true/false) Start Apache™ Hadoop® HDFS™ service (default: true)
