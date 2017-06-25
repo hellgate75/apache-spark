@@ -74,7 +74,9 @@ Configuration folder for Apache™ Hadoop®, and expected/suitable files are :
 
 
 `/etc/config/spark`:
+
 Configuration folder for Apache™ Spark®, and expected/suitable files are :
+
 * `docker.properties` : Configure MESOS docker image (NOT TESTED YET)
 * `log4j.properties` : Configure logging properties
 * `slaves` : Configure slave nodes hosts
