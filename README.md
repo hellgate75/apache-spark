@@ -97,8 +97,8 @@ See :
 `/root/application`:
 
 Folder dedicated to mount application layer, packages and anything that can be compiled on the machine. If that folder conatains any file
-named bootstrap.sh it will be executed automatically before Apache™ Spark® starts. In the installatin file, in order to be sure to point to the
-right source files you have to change to /root/application or mark this as source root.
+named `bootstrap.sh` it will be executed automatically before Apache™ Spark® starts. In the boostrap shell file, in order to be sure to point to the
+right source folder, you have to change to `/root/application` or mark this folder as source root, accordingly to your source ordering and file hierarchy.
 
 
 Ports:
