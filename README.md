@@ -35,6 +35,15 @@ This doscker images has been designed to be a test, development, integration, pr
 *No warranties for production use.*
 
 
+### Default Container service configuration ###
+
+Default docker environment configuration enable to start :
+* Apache™ Hadoop® HDFS™ service
+* Apache™ Spark® all services
+
+If you need a different configutation please note following environment variable, Docker defined capabilities and tips, included in this documentation.
+Apache™ Hadoop® HDFS™ service is the minimum Apache™ Hadoop® service needed by Apache™ Spark®, however configuration can change accondingly to deployed architecture.
+
 
 ### Docker Image features ###
 
@@ -60,7 +69,7 @@ Configuration folder for Apache™ Hadoop®, and expected/suitable files are :
 
 * `core-site.xml`: Core Site custmized configuration file
 * `yarn-site.xml`: Yarn Site custmized configuration file
-* `hdfs-site.xml`: HDFS Site custmized configuration file
+* `hdfs-site.xml`: HDFS™ Site custmized configuration file
 * `mapred-site.xml`: Map Reduce Site custmized configuration file
 
 
@@ -86,7 +95,7 @@ Apache™ Spark® ports:
 8080 (web interface)
 
 
-Apache™ Hadoop® HDFS ports :
+Apache™ Hadoop® HDFS™ ports :
 
 50010 50020 50070 50075 50090 8020 9000
 
@@ -112,9 +121,9 @@ Here Apache™ Spark® service configuration environment variables :
 
 * `SPARK_HADOOP_TGZ_URL` : Url of a tar gz file within Apache™ Hadoop® configuration files (default: "")
 * `SPARK_CONFIG_TGZ_UR` : Url of a tar gz file within Apache™ Spark® configuration files (default: "")
-* `SPARK_START_HADOOP` : Include Apache™ Hadoop® features (true/false) (default: true - suggested for architecture reasons)
+* `SPARK_START_HADOOP` : Include Apache™ Hadoop® features (true/false) (default: true)
 * `SPARK_START_HADOOP_ALL_SERVICES` : (true/false) Auto-Start all Apache™ Hadoop® services at startup other service start configurations will be ignored (default: false)
-* `SPARK_START_HADOOP_HDFS` : (true/false) Start Apache™ Hadoop® HDFS service (default: false)
+* `SPARK_START_HADOOP_HDFS` : (true/false) Start Apache™ Hadoop® HDFS™ service (default: true)
 * `SPARK_START_HADOOP_YARN` : (true/false) Start Apache™ Hadoop® YARN service (default: false)
 * `SPARK_START_HADOOP_JOB_HISTORY` : (true/false) Start Apache™ Hadoop® Mr Job History service (default: false)
 * `SPARK_HADOOP_JOB_HISTORY_MAPRED_COMMAND` : Start Apache™ Hadoop® MapReduce history command (default: "")
@@ -132,11 +141,11 @@ Here Apache™ Spark® service configuration environment variables :
 * `SPARK_START_SLAVE_MASTER_WEBUI_PORT` : Apache™ Spark® worker Master Web UI port (default: "")
 * `SPARK_START_SLAVE_CORES` : Apache™ Spark® worker number of cores provided to master for jobs (default: 1)
 * `SPARK_START_SLAVE_MEMORY` : Apache™ Spark® worker amount of memory provided to master for jobs (default: 2G)
-* `SPARK_START_ALL_SERVICES` : (true/false) Auto-Start all Apache™ Spark® services at startup other service start configurations will be ignored (default: false)
+* `SPARK_START_ALL_SERVICES` : (true/false) Auto-Start all Apache™ Spark® services at startup other service start configurations will be ignored (default: true)
 * `SPARK_START_ALL_SLAVES` : (true/false) Start All Apache™ Spark® Slaves from `slave` file (default: false)
-* `SPARK_START_HISTORY_SERVER` : (true/false) Start Apache™ Spark® History service (default: true)
-* `SPARK_START_SHUFFLE_SERVICE` : (true/false) Start Apache™ Spark® Shuffle service (default: true)
-* `SPARK_START_DEAMONS` : (true/false) Start Apache™ Spark® Daemons (default: true)
+* `SPARK_START_HISTORY_SERVER` : (true/false) Start Apache™ Spark® History service (default: false)
+* `SPARK_START_SHUFFLE_SERVICE` : (true/false) Start Apache™ Spark® Shuffle service (default: false)
+* `SPARK_START_DEAMONS` : (true/false) Start Apache™ Spark® Daemons (default: false)
 * `SPARK_START_DEAMON` : (true/false) Start Apache™ Spark® Daemon (default: false)
 * `SPARK_DAEMON_COMMAND` :  Apache™ Spark® Daemon command with arguments (default: "")
 * `SPARK_START_THRIFT_SERVER` : (true/false) Start Apache™ Spark® Thrift Server (default: false)
@@ -159,7 +168,7 @@ Here Apache™ Spark® common Spark configuration environment variables :
 Here Apache™ Spark® Master Spark node configuration environment variables :
 * `SPARK_CONFIG_DEPLOY_RETAIN_APPS` : The maximum number of completed applications to display. Older applications will be dropped from the UI to maintain this limit (default: 200)
 * `SPARK_CONFIG_RETAIN_DRIVERS` : The maximum number of completed drivers to display. Older drivers will be dropped from the UI to maintain this limit (default: 200)
-* `SPARK_CONFIG_DEPLOY_SPREADOUT` : (true/false) Whether the standalone cluster manager should spread applications out across nodes or try to consolidate them onto as few nodes as possible. Spreading out is usually better for data locality in HDFS, but consolidating is more efficient for compute-intensive workloads (default: true)
+* `SPARK_CONFIG_DEPLOY_SPREADOUT` : (true/false) Whether the standalone cluster manager should spread applications out across nodes or try to consolidate them onto as few nodes as possible. Spreading out is usually better for data locality in HDFS™, but consolidating is more efficient for compute-intensive workloads (default: true)
 * `SPARK_CONFIG_DEPLOY_DEFAULT_CORES` : Default number of cores to give to applications in Spark's standalone/master mode if they don't set spark.cores.max. If not set, applications always get all available cores unless they configure spark.cores.max themselves. Set this lower on a shared cluster to prevent users from grabbing the whole cluster by default (default: 4)
 * `SPARK_CONFIG_DEPLOY_MAX_EXEC_RETRIES` : Limit on the maximum number of back-to-back executor failures that can occur before the standalone cluster manager removes a faulty application. An application will never be removed if it has any running executors. If an application experiences more than spark.deploy.maxExecutorRetries failures in a row, no executors successfully start running in between those failures, and the application has no running executors then the standalone cluster manager will remove the application and mark it as failed. To disable this automatic removal, set spark.deploy.maxExecutorRetries to -1 (default: 10)
 * `SPARK_CONFIG_WORKER_TIMEOUT` : Number of seconds after which the standalone deploy master considers a worker lost if it receives no heartbeats (default: 60)
@@ -232,9 +241,9 @@ Here Apache™ Hadoop® cluster mode container environment variables :
 * `APACHE_HADOOP_IS_MASTER` : Does this node lead cluster workers as the cluter master node? (yes/no)
 * `APACHE_HADOOP_SITE_BUFFER_SIZE` : Set Hadoop Buffer Size (default: 131072)
 * `APACHE_HADOOP_SITE_HOSTNAME`: Set Hadoop master site hostname, as default `localhost` will be replaced with machine hostname
-* `APACHE_HADOOP_HDFS_REPLICATION`: Set HDFS Replication factor  (default: 1)
-* `APACHE_HADOOP_HDFS_BLOCKSIZE`: Set HDFS Block Size (default: 268435456)
-* `APACHE_HADOOP_HDFS_HANDLERCOUNT`: Set HDFS Header Count (default: 100)
+* `APACHE_HADOOP_HDFS_REPLICATION`: Set HDFS™ Replication factor  (default: 1)
+* `APACHE_HADOOP_HDFS_BLOCKSIZE`: Set HDFS™ Block Size (default: 268435456)
+* `APACHE_HADOOP_HDFS_HANDLERCOUNT`: Set HDFS™ Header Count (default: 100)
 * `APACHE_HADOOP_YARN_RESOURCE_MANAGER_HOSTNAME`: Set Yarn Resource Manager hostname, as default `localhost` will be replaced with machine hostname
 * `APACHE_HADOOP_YARN_ACL_ENABLED`: Set Yarn ACL Enabled (default: false values: true|false)
 * `APACHE_HADOOP_YARN_ADMIN_ACL`: Set Admin ACL Name (default: `*`)

@@ -56,7 +56,7 @@ if ! [[ -z "$SPARK_HADOOP_TGZ_URL"  ]]; then
 
       cp -Rf $HADOOP_HOME/etc/hadoop /usr/local/spark/etc
 
-      if [[ "true" == "$SPARK_START_HADOOP" ]] then
+      if [[ "true" == "$SPARK_START_HADOOP" ]]; then
         service ssh start
         $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
         $HADOOP_HOME/bin/hdfs namenode -format -force -nonInteractive && \
@@ -88,7 +88,7 @@ else
   if ! [[ -z "$(ls -latr /etc/config/hadoop/*)" ]]; then
     cp -Rf $HADOOP_HOME/etc/hadoop /usr/local/spark/etc
 
-    if [[ "true" == "$SPARK_START_HADOOP" ]] then
+    if [[ "true" == "$SPARK_START_HADOOP" ]]; then
       service ssh start
       $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
       $HADOOP_HOME/bin/hdfs namenode -format -force -nonInteractive && \
@@ -232,7 +232,7 @@ if [[ "0" != "$CONFIGURED_BY_URL_EXIT_CODE" ]]; then
   cp -Rf $HADOOP_HOME/etc/hadoop /usr/local/spark/etc
 
 
-  if [[ "true" == "$SPARK_START_HADOOP" ]] then
+  if [[ "true" == "$SPARK_START_HADOOP" ]]; then
     service ssh start
     $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
     $HADOOP_HOME/bin/hdfs namenode -format -force -nonInteractive && \

@@ -41,11 +41,13 @@ if [[ "true" == "$SPARK_START_HADOOP" ]]; then
       $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
       $HADOOP_HOME/bin/hdfs namenode -format -force -nonInteractive
       if [[ "true" == "$SPARK_START_HADOOP_HDFS" ]]; then
+        echo "Starting Apache™ Hadoop® HDFS™ service ..."
         $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
         $HADOOP_HOME/sbin/hdfs-config.sh && \
         $HADOOP_HOME/sbin/dfs.sh
       fi
       if [[ "true" == "$SPARK_START_HADOOP_YARN" ]]; then
+        echo "Starting Apache™ Hadoop® YARN™ service ..."
         $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
         $HADOOP_HOME/sbin/start-yarn.sh
         if [[ "true" == "$SPARK_START_HADOOP_YARN_DEAMONS" ]]; then
@@ -60,12 +62,15 @@ if [[ "true" == "$SPARK_START_HADOOP" ]]; then
         fi
       fi
       if [[ "true" == "$SPARK_START_HADOOP_JOB_HISTORY" ]]; then
-        $HADOOP_HOME/sbin/mr-jobhistory-daemon.sh start $SPARK_HADOOP_JOB_HISTORY_MAPRED_COMMAND
+        echo "Starting Apache™ Hadoop® Mr Job History service ..."
+      $HADOOP_HOME/sbin/mr-jobhistory-daemon.sh start $SPARK_HADOOP_JOB_HISTORY_MAPRED_COMMAND
       fi
       if [[ "true" == "$SPARK_START_HADOOP_BALANCER" ]]; then
+        echo "Starting Apache™ Hadoop® Balancer service ..."
         $HADOOP_HOME/sbin/start-balancer.sh
       fi
       if [[ "true" == "$SPARK_START_HADOOP_KMS_SERVER" ]]; then
+        echo "Starting Apache™ Hadoop® KMS™ service ..."
         $HADOOP_HOME/sbin/kms.sh start
       fi
     fi
@@ -135,18 +140,23 @@ if [[ -z "$SPARK_RUNNING" ]] || [[ "true" == "$SPARK_FORCE_RESTART" ]]; then
     fi
   fi
   if [[ "true" == "$SPARK_START_ALL_SERVICES" ]]; then
+    echo "Starting Apache™ Spark® All services ..."
     $SPARK_HOME/sbin/spark-config.sh && $SPARK_HOME/sbin/start-all.sh
   else
     if [[ "true" == "$SPARK_START_HISTORY_SERVER" ]]; then
+      echo "Starting Apache™ Spark® History Service ..."
       $SPARK_HOME/sbin/spark-config.sh && $SPARK_HOME/sbin/start-history-server.sh
     fi
     if [[ "true" == "$SPARK_START_SHUFFLE_SERVICE" ]]; then
+      echo "Starting Apache™ Spark® Shuffle Service ..."
       $SPARK_HOME/sbin/spark-config.sh && $SPARK_HOME/sbin/start-shuffle-service.sh
     fi
     if [[ "true" == "$SPARK_START_THRIFT_SERVER" ]]; then
+      echo "Starting Apache™ Spark® Thrift Server ..."
       $SPARK_HOME/sbin/spark-config.sh && $SPARK_HOME/sbin/start-thriftserver.sh
     fi
     if [[ "true" == "$SPARK_START_MESOS_INTEGRATION" ]]; then
+      echo "Starting Apache™ Spark® MESOS® Services ..."
       $SPARK_HOME/sbin/spark-config.sh && $SPARK_HOME/sbin/start-mesos-dispatcher.sh
       $SPARK_HOME/sbin/spark-config.sh && $SPARK_HOME/sbin/start-mesos-shuffle-service.sh
     fi
@@ -162,7 +172,7 @@ if [[ -z "$SPARK_RUNNING" ]] || [[ "true" == "$SPARK_FORCE_RESTART" ]]; then
     fi
   fi
   if [[ "true" != "$SPARK_START_ALL_SLAVES" ]]; then
-    echo "Apache™ Spark® starting slaves ..."
+    echo "Starting Apache™ Spark® Slaves ..."
     $SPARK_HOME/sbin/spark-config.sh && $SPARK_HOME/sbin/start-slaves.sh
   fi
 else
