@@ -49,7 +49,8 @@ Apache™ Hadoop® HDFS™ service is the minimum Apache™ Hadoop® service nee
 
 Here some information :
 
-Volumes : /user/root/data/hadoop/hdfs/datanode, /user/root/data/hadoop/hdfs/namenode, /user/root/data/hadoop/hdfs/checkpoint, /etc/config/hadoop, /etc/config/spark
+Volumes : /user/root/data/hadoop/hdfs/datanode, /user/root/data/hadoop/hdfs/namenode, /user/root/data/hadoop/hdfs/checkpoint, /etc/config/hadoop, /etc/config/spark, /root/application
+
 
 
 `/user/root/data/hadoop/hdfs/datanode` :
@@ -92,6 +93,13 @@ See :
 * [Stand Alone Configuration](http://spark.apache.org/docs/latest/spark-standalone.html)
 * [Apache YARN Configuration](http://spark.apache.org/docs/latest/running-on-yarn.html)
 * [MESOS Configuration](http://spark.apache.org/docs/latest/running-on-mesos.html)
+
+
+`/root/application`:
+
+Folder dedicated to mount application layer, packages and anything that can be compiled on the machine. If that folder conatains any file
+named bootstrap.sh it will be executed automatically before Apache™ Spark® starts. In the installatin file, in order to be sure to point to the
+right source files you have to change to /root/application or mark this as source root.
 
 
 Ports:

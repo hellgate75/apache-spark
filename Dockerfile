@@ -59,18 +59,17 @@ ENV SPARK_HOME=/usr/local/spark \
     SPARK_CONFIG_WORKER_CLEANUP_INTERVAL=1800 \
     SPARK_CONFIG_WORKER_CLEANUP_TTL=604800 \
     SPARK_CONFIG_WORKER_COMPRESSED_CACHE_SIZE=100 \
-    PATH=$PATH:/usr/local/bin:/usr/local/spark/bin:/usr/local/spark/sbin
+    SCALA_HOME=/usr/local/share/scala \
+    PATH=$PATH:/usr/local/share/scala/bin:/usr/local/bin:/usr/local/spark/bin:/usr/local/spark/sbin
 
 
 USER root
 
-#support for Hadoop
+#support for Spark
 RUN curl -s https://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION-bin-hadoop$APACHE_HADOOP_VERSION.tgz | tar -xz -C /usr/local/
 RUN cd /usr/local && ln -s spark-$SPARK_VERSION-bin-hadoop$APACHE_HADOOP_VERSION spark
 
-#RUN $BOOTSTRAP && $HADOOP_HOME/bin/hadoop dfsadmin -safemode leave && $HADOOP_HOME/bin/hdfs dfs -put $SPARK_HOME-1.6.1-bin-hadoop2.6/lib /spark
-
-# update boot script
+# define and update boot && docker run scripts
 COPY bootstrap.sh /etc/bootstrap.sh
 COPY docker-start-spark.sh /usr/local/bin/docker-start-spark
 COPY spark-defaults-master.conf /usr/local/spark/conf/spark-defaults-master.conf
@@ -80,7 +79,8 @@ RUN chown root.root /etc/bootstrap.sh && \
     chmod +x /etc/bootstrap.sh && \
     chmod +x /usr/local/bin/docker-start-spark && \
     mkdir -p $HADOOP_CONF_DIR && \
-    mkdir -p /etc/config/spark
+    mkdir -p /etc/config/spark && \
+    mkdir -p /root/application
 
 #install R
 RUN apt-get update && \
@@ -88,14 +88,30 @@ RUN apt-get update && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
     add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
     apt-get update && \
-    apt-get install -y r-base  --no-install-recommends && \
+    apt-get install -y r-base --no-install-recommends && \
     apt-get clean && \
     apt-get -y autoclean && \
     rm -rf /var/lib/apt/lists/*
 
+WORKDIR /root
+
+#install Scala
+RUN curl -LO http://www.scala-lang.org/files/archive/scala-2.12.2.deb && \
+    sudo dpkg -i ./scala-2.12.2.deb
+    # && \
+    # echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list && \
+    # apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823 && \
+    # apt-get update && \
+    # apt-get install -y sbt --no-install-recommends && \
+    # apt-get clean && \
+    # apt-get -y autoclean && \
+    # rm -rf /var/lib/apt/lists/*
+
+WORKDIR $SPARK_HOME
+
 CMD ["docker-start-spark", "-daemon"]
 
-VOLUME ["/user/root/data/hadoop/hdfs/datanode", "/user/root/data/hadoop/hdfs/namenode", "/user/root/data/hadoop/hdfs/checkpoint", "/etc/config/hadoop", "/etc/config/spark"]
+VOLUME ["/user/root/data/hadoop/hdfs/datanode", "/user/root/data/hadoop/hdfs/namenode", "/user/root/data/hadoop/hdfs/checkpoint", "/etc/config/hadoop", "/etc/config/spark", "mkdir -p /root/application"]
 
 # Exposed Apache Haddop ports
 # Apache Spark ports :

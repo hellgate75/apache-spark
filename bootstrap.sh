@@ -82,6 +82,15 @@ else
   echo "Apache™ Hadoop® is deactivate, not start action provided!!"
 fi
 
+if [[ -e /root/application/bootstrap.sh ]]; then
+  if ! [[ -e /root/application/.spark_built ]]; then
+    echo "Apache™ Spark® Application Bootstrap script execution ..."
+    chmod 777 /root/application/bootstrap.sh
+    /root/application/bootstrap.sh
+    touch /root/application/.spark_built
+  fi
+fi
+
 if [[ -z "$SPARK_RUNNING" ]] || [[ "true" == "$SPARK_FORCE_RESTART" ]]; then
   if [[ "true" == "$SPARK_FORCE_RESTART" ]]; then
     $SPARK_HOME/sbin/stop-all.sh
