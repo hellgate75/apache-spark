@@ -1,0 +1,22 @@
+#------------------------------------------------------------------------------#
+#                            OFFICIAL UBUNTU REPOS                             #
+#------------------------------------------------------------------------------#
+
+
+###### Ubuntu Main Repos
+deb http://ie.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse
+deb-src http://ie.archive.ubuntu.com/ubuntu/ xenial main restricted universe
+
+###### Ubuntu Update Repos
+deb http://ie.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse
+deb http://ie.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse
+deb http://ie.archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe multiverse
+deb http://ie.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse
+deb-src http://ie.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe
+deb-src http://ie.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe
+deb-src http://ie.archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe
+deb-src http://ie.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe
+
+###### Ubuntu Partner Repo
+deb http://archive.canonical.com/ubuntu xenial partner
+deb-src http://archive.canonical.com/ubuntu xenial partner
