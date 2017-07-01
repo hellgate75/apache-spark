@@ -82,9 +82,13 @@ RUN chown root.root /etc/bootstrap.sh && \
     mkdir -p /etc/config/spark && \
     mkdir -p /root/application
 
+COPY sources.list /etc/apt/sources.backup.list
+RUN cat /etc/apt/sources.list >> /etc/apt/sources.backup.list && \
+    cat /etc/apt/sources.backup.list > /etc/apt/sources.list
+
 #install R
 RUN apt-get update && \
-    apt-get install -y apt-transport-https && \
+    apt-get -y --no-install-recommends install apt-transport-https && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
     add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
     apt-get update && \
