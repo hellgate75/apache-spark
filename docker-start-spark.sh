@@ -29,13 +29,14 @@ if ! [[ -z "$SPARK_CONFIG_TGZ_URL"  ]]; then
     echo "Apache™ Spark® $HAHOOP_VERSION already configured!!"
   fi
 else
-  if ! [[ -z "$(ls -latr /etc/config/spark/*)" ]]; then
-    cp -f /etc/config/spark/* /usr/local/spark/conf/
-    touch /root/spark_configured
-    echo "Apache™ Hadoop® configured by volume : /etc/config/spark/ !!"
-    export CONFIGURED_SPARK_BY_URL_EXIT_CODE=0
+  if [[ -e /etc/config/spark ]]; then
+    if ! [[ -z "$(ls -latr /etc/config/spark/*)" ]]; then
+      cp -f /etc/config/spark/* /usr/local/spark/conf/
+      touch /root/spark_configured
+      echo "Apache™ Hadoop® configured by volume : /etc/config/spark/ !!"
+      export CONFIGURED_SPARK_BY_URL_EXIT_CODE=0
+    fi
   fi
-
 fi
 
 if [[ -e /etc/config/spark/init-spark-env.sh ]]; then
@@ -86,34 +87,35 @@ if ! [[ -z "$SPARK_HADOOP_TGZ_URL"  ]]; then
     echo "Apache™ Hadoop® $HAHOOP_VERSION already configured!!"
   fi
 else
-  if ! [[ -z "$(ls -latr /etc/config/hadoop/*)" ]]; then
-    cp -Rf $HADOOP_HOME/etc/hadoop /usr/local/spark/etc
+  if [[ -e /etc/config/hadoop ]]; then
+    if ! [[ -z "$(ls -latr /etc/config/hadoop/*)" ]]; then
+      cp -Rf $HADOOP_HOME/etc/hadoop /usr/local/spark/etc
 
-    if [[ "true" == "$SPARK_START_HADOOP" ]]; then
-      service ssh start
-      $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-      $HADOOP_HOME/bin/hdfs namenode -format -force -nonInteractive && \
-      $HADOOP_HOME/sbin/start-dfs.sh && \
-      $HADOOP_HOME/bin/hdfs dfs -mkdir /user && \
-      $HADOOP_HOME/bin/hdfs dfs -mkdir -p /user/root && \
-      $HADOOP_HOME/sbin/stop-dfs.sh
-      service ssh stop
+      if [[ "true" == "$SPARK_START_HADOOP" ]]; then
+        service ssh start
+        $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
+        $HADOOP_HOME/bin/hdfs namenode -format -force -nonInteractive && \
+        $HADOOP_HOME/sbin/start-dfs.sh && \
+        $HADOOP_HOME/bin/hdfs dfs -mkdir /user && \
+        $HADOOP_HOME/bin/hdfs dfs -mkdir -p /user/root && \
+        $HADOOP_HOME/sbin/stop-dfs.sh
+        service ssh stop
 
-      service ssh start
-      $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-      $HADOOP_HOME/sbin/start-dfs.sh && \
-      $HADOOP_HOME/bin/hdfs dfs -mkdir input && \
-      $HADOOP_HOME/bin/hdfs dfs -put $HADOOP_HOME/etc/hadoop/ input && \
-      $HADOOP_HOME/sbin/stop-dfs.sh
-      service ssh stop
-      touch /root/hadoop_configured
-      echo "Apache™ Hadoop® configured by volume : /etc/config/hadoop/ !!"
-      export CONFIGURED_BY_URL_EXIT_CODE=0
-    else
-      echo "Apache™ Hadoop® is deactivate, not configuration action provided!!"
+        service ssh start
+        $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
+        $HADOOP_HOME/sbin/start-dfs.sh && \
+        $HADOOP_HOME/bin/hdfs dfs -mkdir input && \
+        $HADOOP_HOME/bin/hdfs dfs -put $HADOOP_HOME/etc/hadoop/ input && \
+        $HADOOP_HOME/sbin/stop-dfs.sh
+        service ssh stop
+        touch /root/hadoop_configured
+        echo "Apache™ Hadoop® configured by volume : /etc/config/hadoop/ !!"
+        export CONFIGURED_BY_URL_EXIT_CODE=0
+      else
+        echo "Apache™ Hadoop® is deactivate, not configuration action provided!!"
+      fi
     fi
   fi
-
 fi
 
 if [[ -e /usr/share/zoneinfo/$MACHINE_TIMEZONE ]]; then
@@ -265,28 +267,32 @@ echo "Apache™ Spark® $SPARK_VERSION (build on $APACHE_HADOOP_VERSION) install
 
 if [[ "0" != "$CONFIGURED_SPARK_BY_URL_EXIT_CODE" ]]; then
   if ! [[ -e  /root/spark_configured ]]; then
-    if [[ "true" != "$START_MASTER_SPARK_NODE" ]]; then
-      export START_MASTER_SPARK_NODE=true
-    fi
-    if [[ "true" == "$SPARK_START_MASTER_NODE" ]]; then
-      echo "Apache™ Spark® $SPARK_VERSION (build on $APACHE_HADOOP_VERSION) installed on $HAHOOP_VERSION MASTER mode configuration ..."
-      sed s/EVENT_LOG_ENABLED/$SPARK_CONFIG_LOG_EVENT_ENABLED/g /usr/local/spark/conf/spark-defaults-master.conf | \
-      sed s/SPARK_SERIALIZER_CLASS/$SPARK_CONFIG_SERIALIZER_CLASS/g | sed s/SPARK_DRIVER_MEMORY/$SPARK_CONFIG_DRIVER_MEMORY/g | \
-      sed s/SPARK_EXTRA_JVM_OPTIONS/$SPARK_CONFIG_EXTRA_JVM_OPTIONS/g | sed s/EVENT_LOG_ENABLED/$SPARK_CONFIG_LOG_EVENT_ENABLED/g | \
-      sed s/MAX_RETAIN_APPLICATIONS/$SPARK_CONFIG_DEPLOY_RETAIN_APPS/g | sed s/MAX_RETAIN_DRIVERS/$SPARK_CONFIG_RETAIN_DRIVERS/g | \
-      sed s/DEPLOY_DEFAULT_CORES/$SPARK_CONFIG_DEPLOY_DEFAULT_CORES/g | sed s/DEPLOY_SPREAD_OUT/$SPARK_CONFIG_DEPLOY_SPREADOUT/g | \
-      sed s/DEPLOY_MAX_RETRIES/$SPARK_CONFIG_DEPLOY_MAX_EXEC_RETRIES/g sed s/WORKER_TIMEOUT/$SPARK_CONFIG_WORKER_TIMEOUT/g \
-      > /usr/local/spark/conf/spark-defaults.conf
+    if [[ "true" != "$SPARK_RUN_STANDALONE" ]]; then
+      if [[ "true" != "$START_MASTER_SPARK_NODE" ]]; then
+        export START_MASTER_SPARK_NODE=true
+      fi
+      if [[ "true" == "$SPARK_START_MASTER_NODE" ]]; then
+        echo "Apache™ Spark® $SPARK_VERSION (build on $APACHE_HADOOP_VERSION) installed on $HAHOOP_VERSION MASTER mode configuration ..."
+        sed s/EVENT_LOG_ENABLED/$SPARK_CONFIG_LOG_EVENT_ENABLED/g $SPARK_HOME/conf/spark-defaults-master.conf | \
+        sed s/SPARK_SERIALIZER_CLASS/$SPARK_CONFIG_SERIALIZER_CLASS/g | sed s/SPARK_DRIVER_MEMORY/$SPARK_CONFIG_DRIVER_MEMORY/g | \
+        sed s/SPARK_EXTRA_JVM_OPTIONS/$SPARK_CONFIG_EXTRA_JVM_OPTIONS/g | sed s/EVENT_LOG_ENABLED/$SPARK_CONFIG_LOG_EVENT_ENABLED/g | \
+        sed s/MAX_RETAIN_APPLICATIONS/$SPARK_CONFIG_DEPLOY_RETAIN_APPS/g | sed s/MAX_RETAIN_DRIVERS/$SPARK_CONFIG_RETAIN_DRIVERS/g | \
+        sed s/DEPLOY_DEFAULT_CORES/$SPARK_CONFIG_DEPLOY_DEFAULT_CORES/g | sed s/DEPLOY_SPREAD_OUT/$SPARK_CONFIG_DEPLOY_SPREADOUT/g | \
+        sed s/DEPLOY_MAX_RETRIES/$SPARK_CONFIG_DEPLOY_MAX_EXEC_RETRIES/g sed s/WORKER_TIMEOUT/$SPARK_CONFIG_WORKER_TIMEOUT/g \
+        > $SPARK_HOME/conf/spark-defaults.conf
+      else
+        echo "Apache™ Spark® $SPARK_VERSION (build on $APACHE_HADOOP_VERSION) installed on $HAHOOP_VERSION WORKER mode configuration ..."
+        MASTER_HOST="${SPARK_START_SLAVE_MASTER_HOST:-`echo $SPARK_MASTER_HOST`}"
+        MASTER_PORT="${SPARK_START_SLAVE_MASTER_PORT:-`echo $SPARK_MASTER_PORT`}"
+        sed s/EVENT_LOG_ENABLED/$SPARK_CONFIG_LOG_EVENT_ENABLED/g $SPARK_HOME/conf/spark-defaults-worker.conf | \
+        sed s/SPARK_SERIALIZER_CLASS/$SPARK_CONFIG_SERIALIZER_CLASS/g | sed s/SPARK_DRIVER_MEMORY/$SPARK_CONFIG_DRIVER_MEMORY/g | \
+        sed s/SPARK_EXTRA_JVM_OPTIONS/$SPARK_CONFIG_EXTRA_JVM_OPTIONS/g | sed s/EVENT_LOG_ENABLED/$SPARK_CONFIG_LOG_EVENT_ENABLED/g | \
+        sed s/MASTER_HOST/$MASTER_HOST/g | sed s/MASTER_PORT/$MASTER_PORT/g | s/CLEAN_UP_ENABLED/$SPARK_CONFIG_WORKER_CLEANUP_ENABLED/g \
+        sed s/CLEAN_UP_INTERVAL/$SPARK_CONFIG_WORKER_CLEANUP_INTERVAL/g | sed s/CLEAN_UP_TTL/$SPARK_CONFIG_WORKER_CLEANUP_TTL/g | \
+        sed s/COMPRESSED_CACHED_SIZE/$SPARK_CONFIG_WORKER_COMPRESSED_CACHE_SIZE/g > $SPARK_HOME/conf/spark-defaults.conf
+      fi
     else
-      echo "Apache™ Spark® $SPARK_VERSION (build on $APACHE_HADOOP_VERSION) installed on $HAHOOP_VERSION WORKER mode configuration ..."
-      MASTER_HOST="${SPARK_START_SLAVE_MASTER_HOST:-`echo $SPARK_MASTER_HOST`}"
-      MASTER_PORT="${SPARK_START_SLAVE_MASTER_PORT:-`echo $SPARK_MASTER_PORT`}"
-      sed s/EVENT_LOG_ENABLED/$SPARK_CONFIG_LOG_EVENT_ENABLED/g /usr/local/spark/conf/spark-defaults-master.conf | \
-      sed s/SPARK_SERIALIZER_CLASS/$SPARK_CONFIG_SERIALIZER_CLASS/g | sed s/SPARK_DRIVER_MEMORY/$SPARK_CONFIG_DRIVER_MEMORY/g | \
-      sed s/SPARK_EXTRA_JVM_OPTIONS/$SPARK_CONFIG_EXTRA_JVM_OPTIONS/g | sed s/EVENT_LOG_ENABLED/$SPARK_CONFIG_LOG_EVENT_ENABLED/g | \
-      sed s/MASTER_HOST/$MASTER_HOST/g | sed s/MASTER_PORT/$MASTER_PORT/g | s/CLEAN_UP_ENABLED/$SPARK_CONFIG_WORKER_CLEANUP_ENABLED/g \
-      sed s/CLEAN_UP_INTERVAL/$SPARK_CONFIG_WORKER_CLEANUP_INTERVAL/g | sed s/CLEAN_UP_TTL/$SPARK_CONFIG_WORKER_CLEANUP_TTL/g | \
-      sed s/COMPRESSED_CACHED_SIZE/$SPARK_CONFIG_WORKER_COMPRESSED_CACHE_SIZE/g > /usr/local/spark/conf/spark-defaults.conf
+      echo "Apache™ Spark® $SPARK_VERSION (build on $APACHE_HADOOP_VERSION) installed on $HAHOOP_VERSION STAND-ALONE mode : No configuration applied!!"
     fi
     touch /root/spark_configured
   else
