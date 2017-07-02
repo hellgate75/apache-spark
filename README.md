@@ -132,6 +132,7 @@ Other Apache™ Hadoop® ports:
 
 Here Apache™ Spark® service configuration environment variables :
 
+* `SPARK_RUN_STANDALONE` : (true/false) Run Apache™ Spark® in stand-alone mode, no Apache™ Spark® configuration will be applied (default: true)
 * `SPARK_HADOOP_TGZ_URL` : Url of a tar gz file within Apache™ Hadoop® configuration files (default: "")
 * `SPARK_CONFIG_TGZ_URL` : Url of a tar gz file within Apache™ Spark® configuration files (default: "")
 * `SPARK_START_HADOOP` : Include Apache™ Hadoop® features (true/false) (default: true)
